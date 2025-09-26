@@ -112,5 +112,3 @@ Version-Control/
 ISC
 
 ---
-
-This README is minimal, clear, and matches your current repo and best practices for version control.
