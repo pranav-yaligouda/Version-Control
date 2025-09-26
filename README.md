@@ -1,4 +1,4 @@
-# Express CRUD VERSION CONTROLLED API
+# Version Controlled Express CRUD API
 
 A simple Express.js API for CRUD operations with MongoDB, featuring basic frontend, environment configuration, and professional version control practices.
 
