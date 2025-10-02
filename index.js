@@ -1,5 +1,6 @@
-import {NODE_ENV, PORT } from './config/envconfig.js'
+import {NODE_ENV, PORT} from './config/envconfig.js'
 import express from 'express';
+import connectToDatabase from './database/mongodb.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -33,4 +34,6 @@ app.use((req, res) => {
 
 app.listen(PORT, () => {
     console.log(`Server running in ${NODE_ENV} on port ${PORT}`);
+    connectToDatabase();
 })
+

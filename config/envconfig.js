@@ -1,10 +1,11 @@
 import { config } from 'dotenv';
 
 if (process.env.NODE_ENV !== 'production') {
-    config({path: './env'})
+    config({path: './.env'})
 }
 
 export const { 
-    NODE_ENV = 'development',
-    PORT = 8080
+    NODE_ENV ,
+    PORT ,
+    MONGODB_URI,
 } = process.env;
