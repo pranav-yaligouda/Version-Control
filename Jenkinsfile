@@ -8,7 +8,6 @@ pipeline {
         PORT = '5000'
         MONGODB_URI = credentials('DB_URI')
         DOCKERHUB_USERNAME = 'pranav-yaligouda'
-        DOCKERHUB_PASSWORD = credentials('dockerhub_credentials')
         IMAGE_NAME = "crud-vc"
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
@@ -43,7 +42,9 @@ pipeline {
             }
             steps{
                 echo 'Pushing image to DockerHub'
-                sh 'docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
+                }  
                 sh 'docker push ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}'
                 sh 'docker push ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest'
                 sh 'docker logout'
