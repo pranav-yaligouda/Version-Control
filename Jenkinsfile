@@ -9,7 +9,7 @@ pipeline {
         MONGODB_URI = credentials('DB_URI')
         IMAGE_NAME = "crud-vc"
         IMAGE_TAG = "${BUILD_NUMBER}"
-        DOCKERHUB_USERNAME = 'pranav-yaligouda'
+        DOCKERHUB_USERNAME = 'pranavyaligouda'
     }
 
     stages {
