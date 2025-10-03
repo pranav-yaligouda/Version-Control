@@ -30,6 +30,7 @@ pipeline {
         stage('Test container') {
             steps {
                 echo 'Running container and testing'
+                sh 'docker rm -f crud-vc || true'
                 sh 'docker run -d -p 5000:5000 --env NODE_ENV=${NODE_ENV} --env PORT=${PORT} --env MONGODB_URI=${MONGODB_URI} --name crud-vc ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}'
                 sh 'sleep 7'
                 sh 'curl -f http://localhost:5000/api/v1/health || exit 1'
