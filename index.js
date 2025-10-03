@@ -15,7 +15,7 @@ app.get('/',(req, res) => {
 })
 
 // Health Check API
-app.get('/health',(req, res) => {
+app.get('/api/v1/health',(req, res) => {
     res.status(200).json({
         status: 'OK',
         uptime: process.uptime()
