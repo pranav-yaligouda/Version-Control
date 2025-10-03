@@ -1,4 +1,3 @@
-Got it 👍 You want to install **Nginx** and **Jenkins** on an AWS Ubuntu instance. I’ll give you both:
 
 1. **Step-by-step commands (manual setup)**
 2. **Ready-to-use Bash script (automated setup)**
