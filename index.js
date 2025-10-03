@@ -16,6 +16,11 @@ app.get('/',(req, res) => {
     res.send('Server is Running');
 })
 
+// Health Check API
+app.get('/api/v1/health',(req, res) => {
+    res.status(200).json({ status: 'OK', uptime: process.uptime() });
+})
+
 // HOME PAGE html file serving route
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'home.html'));
@@ -31,10 +36,6 @@ app.use((req, res) => {
     res.status(404).json({error: 404, message: 'Not Found'});
 })
 
-// Health Check API
-app.get('/api/v1/health',(req, res) => {
-    res.status(200).json({ status: 'OK', uptime: process.uptime() });
-})
 
 // Establish DB connection first, then start server
 connectToDatabase().then(() => {
