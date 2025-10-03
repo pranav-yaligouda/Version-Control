@@ -4,7 +4,7 @@ pipeline {
         choice(name: 'ENVIRONMENT', choices: ['DEVELOPMENT', 'STAGING', 'PRODUCTION'], description: 'Select the deployment environment')
     }
     environment {
-        NODE_ENV = ${params.ENVIRONMENT}
+        NODE_ENV = "${params.ENVIRONMENT}"
         PORT = '5000'
         MONGODB_URI = credentials('DB_URI')
         DOCKERHUB_USERNAME = 'pranav-yaligouda'
