@@ -7,6 +7,7 @@ pipeline {
         NODE_ENV = "${params.ENVIRONMENT}"
         PORT = '5000'
         MONGODB_URI = credentials('DB_URI')
+        ECR_REGISTRY = credentials('ECR_REGISTRY')
         IMAGE_NAME = "crud-vc"
         IMAGE_TAG = "${BUILD_NUMBER}"
         DOCKERHUB_USERNAME = 'pranavyaligouda'
@@ -60,11 +61,11 @@ pipeline {
                 echo 'Pushing image to AWS ECR'
                 withCredentials([usernamePassword(credentialsId: 'aws_ecr_credentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
-                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 741916656498.dkr.ecr.ap-south-1.amazonaws.com
-                        docker tag ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} 741916656498.dkr.ecr.ap-south-1.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
-                        docker tag ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest 741916656498.dkr.ecr.ap-south-1.amazonaws.com/${IMAGE_NAME}:latest
-                        docker push 741916656498.dkr.ecr.ap-south-1.amazonaws.com/${IMAGE_NAME}:${IMAGE_TAG}
-                        docker push 741916656498.dkr.ecr.ap-south-1.amazonaws.com/${IMAGE_NAME}:latest
+                        aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+                        docker tag ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} ${ECR_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                        docker tag ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest ${ECR_REGISTRY}/${IMAGE_NAME}:latest
+                        docker push ${ECR_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
+                        docker push ${ECR_REGISTRY}/${IMAGE_NAME}:latest
                         docker logout
                     '''
                 }
