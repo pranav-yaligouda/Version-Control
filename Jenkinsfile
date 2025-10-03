@@ -7,26 +7,27 @@ pipeline {
         NODE_ENV = "${params.ENVIRONMENT}"
         PORT = '5000'
         MONGODB_URI = credentials('DB_URI')
-        DOCKERHUB_USERNAME = 'pranav-yaligouda'
         IMAGE_NAME = "crud-vc"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        DOCKERHUB_USERNAME = 'pranav-yaligouda'
     }
 
     stages {
-        stage ('Checkout repo') {
-            steps{
+        stage('Checkout repo') {
+            steps {
                 echo 'Checking out repo'
                 checkout scm
             }
         }
-        stage ('Build docker image') {
-            steps{
+        stage('Build docker image') {
+            steps {
                 echo 'Building docker image'
+                sh 'docker logout || true' // Ensure no cached credentials
                 sh 'docker build -t ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} .'
                 sh 'docker tag ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG} ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest'
             }
         }
-        stage ('Test container') {
+        stage('Test container') {
             steps {
                 echo 'Running container and testing'
                 sh 'docker run -d -p 5000:5000 --env NODE_ENV=${NODE_ENV} --env PORT=${PORT} --env MONGODB_URI=${MONGODB_URI} --name crud-vc ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}'
@@ -36,25 +37,25 @@ pipeline {
                 sh 'docker rm crud-vc'
             }
         }
-        stage ('Push to DockerHub') {
+        stage('Push to DockerHub') {
             when {
-                expression { return params.ENVIRONMENT != 'PRODUCTION'}
+                expression { params.ENVIRONMENT != 'PRODUCTION' }
             }
-            steps{
+            steps {
                 echo 'Pushing image to DockerHub'
-                withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DH_USERNAME', passwordVariable: 'DH_PASSWORD')]) {
-                sh 'docker login -u $DH_USERNAME -p $DH_PASSWORD'
-                }  
-                sh 'docker push ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:${IMAGE_TAG}'
-                sh 'docker push ${DOCKERHUB_USERNAME}/${IMAGE_NAME}:latest'
-                sh 'docker logout'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credentials', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+                    sh 'echo $DH_PASS | docker login -u $DH_USER --password-stdin'
+                    sh 'docker push $DH_USER/${IMAGE_NAME}:${IMAGE_TAG}'
+                    sh 'docker push $DH_USER/${IMAGE_NAME}:latest'
+                    sh 'docker logout'
+                }
             }
         }
-        stage ('Push to AWS ECR') {
+        stage('Push to AWS ECR') {
+            when {
+                expression { params.ENVIRONMENT == 'PRODUCTION' }
+            }
             steps {
-                when {
-                    expression { return params.ENVIRONMENT == 'PRODUCTION' }
-                }
                 echo 'Pushing image to AWS ECR'
             }
         }
