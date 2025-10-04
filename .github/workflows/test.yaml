@@ -22,7 +22,7 @@ jobs:
     - name: Run lint test
       run: |
         echo "Installing dependencies"
-        npm install
+        npm install --include dev
         echo "Running lint test"
         npm run lint
 
