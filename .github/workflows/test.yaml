@@ -19,7 +19,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    - name: Run lint test
+      run: |
+        echo "Running lint test"
+        npm run lint
+
     - name: Run tests
       run: |
-        echo "Runnning tests"
+        echo "Running tests"
         npm run test
