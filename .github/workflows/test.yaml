@@ -3,8 +3,6 @@ name: Run test
 on:
   push:
     branches: [ feature ]
-  pull_requests:
-    branches: [ feature ]
 
 env:
   NODE_ENV: production
