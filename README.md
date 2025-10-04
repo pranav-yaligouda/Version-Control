@@ -2,7 +2,6 @@
 [![Build Status](http://3.6.76.35:8080/buildStatus/icon?job=build-test-push-crud-vc)](http://3.6.76.35:8080/job/build-test-push-crud-vc/)
 
 
-
 # Version Controlled Express CRUD API
 
 A simple Express.js API for CRUD operations with MongoDB, featuring basic frontend, environment configuration, and professional version control practices.
