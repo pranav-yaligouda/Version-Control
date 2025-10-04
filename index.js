@@ -4,6 +4,7 @@ import connectToDatabase from './database/mongodb.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import userRouter from './routes/user.route.js';
+import errorMiddleware from './middlewares/error.middleware.js';
 
 // Fix __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -36,6 +37,7 @@ app.use((req, res) => {
     res.status(404).json({error: 404, message: 'Not Found'});
 })
 
+app.use(errorMiddleware);
 
 // Establish DB connection first, then start server
 connectToDatabase().then(() => {
