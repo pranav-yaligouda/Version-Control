@@ -3,6 +3,8 @@ name: Run test
 on:
   push:
     branches: [ feature ]
+  pull_request:
+    branches: [ feature ]
 
 env:
   NODE_ENV: production
@@ -13,11 +15,11 @@ jobs:
   test-job:
     runs-on: ubuntu-latest
 
-  steps:
-  - name: Checkout code
-    uses: actions/checkout@v4
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-  - name: Run tests
-    run: |
-      echo "Runnning tests"
-      npm run test
+    - name: Run tests
+      run: |
+        echo "Runnning tests"
+        npm run test
