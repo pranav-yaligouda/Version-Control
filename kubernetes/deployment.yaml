@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crud-vc
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: crud-vc
+  template:
+    metadata:
+      labels:
+        app: crud-vc
+    spec:
+      containers:
+        - name: crud-vc
+          image: crud-vc:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5000"
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-uri-secret
+                  key: MONGODB_URI

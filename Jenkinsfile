@@ -1,8 +1,10 @@
 pipeline {
     agent any
+    
     parameters {
         choice(name: 'ENVIRONMENT', choices: ['DEVELOPMENT', 'STAGING', 'PRODUCTION'], description: 'Select the deployment environment')
     }
+
     environment {
         NODE_ENV = "${params.ENVIRONMENT}"
         PORT = '5000'
